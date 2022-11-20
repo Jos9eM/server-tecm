@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import { User } from "../models/userEntity";
 import bcrypt from "bcrypt";
 import Token from "../classes/token";
+import { tokenVerify } from "../middlewares/auth";
 
 const userRoutes = Router();
 
@@ -68,6 +69,37 @@ userRoutes.post("/createUser", (req: Request, res: Response) => {
         message: err,
       });
     });
+});
+
+// Actualizar usuarios
+userRoutes.post("/update", [tokenVerify], (req: any, res: Response) => {
+  const user = {
+    name: req.body.name || req.user.name,
+    email: req.body.email || req.user.email,
+    avatar: req.body.avatar || req.user.avatar,
+  };
+
+  User.findByIdAndUpdate(req.user._id, user, { new: true }, (err, userDB) => {
+    if (err) throw err;
+    if (!userDB) {
+      return res.json({
+        ok: false,
+        message: "Usuario no encontrado",
+      });
+    } else {
+      const tokenUser = Token.getJwtToken({
+        _id: userDB._id,
+        name: userDB.name,
+        email: userDB.email,
+        avatar: userDB.avatar,
+      });
+
+      return res.json({
+        ok: true,
+        token: tokenUser,
+      });
+    }
+  });
 });
 
 export default userRoutes;

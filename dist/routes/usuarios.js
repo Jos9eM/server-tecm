@@ -16,6 +16,7 @@ const express_1 = require("express");
 const userEntity_1 = require("../models/userEntity");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const token_1 = __importDefault(require("../classes/token"));
+const auth_1 = require("../middlewares/auth");
 const userRoutes = (0, express_1.Router)();
 // Login
 userRoutes.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -75,6 +76,36 @@ userRoutes.post("/createUser", (req, res) => {
             ok: false,
             message: err,
         });
+    });
+});
+// Actualizar usuarios
+userRoutes.post("/update", [auth_1.tokenVerify], (req, res) => {
+    const user = {
+        name: req.body.name || req.user.name,
+        email: req.body.email || req.user.email,
+        avatar: req.body.avatar || req.user.avatar,
+    };
+    userEntity_1.User.findByIdAndUpdate(req.user._id, user, { new: true }, (err, userDB) => {
+        if (err)
+            throw err;
+        if (!userDB) {
+            return res.json({
+                ok: false,
+                message: "Usuario no encontrado",
+            });
+        }
+        else {
+            const tokenUser = token_1.default.getJwtToken({
+                _id: userDB._id,
+                name: userDB.name,
+                email: userDB.email,
+                avatar: userDB.avatar,
+            });
+            return res.json({
+                ok: true,
+                token: tokenUser,
+            });
+        }
     });
 });
 exports.default = userRoutes;
