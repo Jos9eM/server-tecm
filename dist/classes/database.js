@@ -8,38 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const server_1 = __importDefault(require("./src/server"));
-function main() {
+exports.connect = void 0;
+const promise_1 = require("mysql2/promise");
+function connect() {
     return __awaiter(this, void 0, void 0, function* () {
-        const server = new server_1.default();
-        //Starting Express server
-        yield server.start();
+        const connection = yield (0, promise_1.createPool)({
+            host: "localhost",
+            user: "root",
+            password: "F@jardo1",
+            database: "tecnm_sql",
+            connectionLimit: 10,
+        });
+        return connection;
     });
 }
-// Body Parser
-/*
-server.app.use(bodyParser.urlencoded({ extended: true }));
-
-// User Routes
-
-server.app.use("/user", userRoutes);
-
-// DB Connection
-
-mongoose
-  .connect("mongodb://localhost:27017/test", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  } as ConnectOptions)
-  .then((res) => {
-    console.log("Connected API Database - ONLINE");
-  })
-  .catch((err) => {
-    console.log(`Initial API Database connection error occured -`, err);
-  });
-*/
-main();
+exports.connect = connect;

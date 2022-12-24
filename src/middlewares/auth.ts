@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import Token from "../classes/token";
+import Token from "../token";
 
 export const tokenVerify = (req: any, res: Response, next: NextFunction) => {
   const userToken = req.get("x-token") || "";

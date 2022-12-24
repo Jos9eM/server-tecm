@@ -1,15 +1,19 @@
-import Server from "./classes/server";
-import userRoutes from "./routes/usuarios";
+import Server from "./src/server";
+import router from "./src/routes/usuarios";
 import mongoose, { ConnectOptions } from "mongoose";
 import bodyParser from "body-parser";
 
-const server = new Server();
+async function main(){
+  const server = new Server();
+  
+  //Starting Express server
+  await server.start();
 
-// Body Parser
-// ----------------------------------------------------------------
-// Middleware procesa los metodos del servicio 
-// ----------------------------------------------------------------
+}
 
+  // Body Parser
+
+/*
 server.app.use(bodyParser.urlencoded({ extended: true }));
 
 // User Routes
@@ -29,9 +33,10 @@ mongoose
   .catch((err) => {
     console.log(`Initial API Database connection error occured -`, err);
   });
+*/
 
-//Starting Express server
+main();
 
-server.start(() => {
-  console.log(`Server started on  port ${server.port}`);
-});
+
+
+

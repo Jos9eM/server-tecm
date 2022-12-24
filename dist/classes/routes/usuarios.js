@@ -13,10 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const userEntity_1 = require("../database/userEntity");
+const userEntity_1 = require("../../database/userEntity");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const token_1 = __importDefault(require("../classes/token"));
-const auth_1 = require("../middlewares/auth");
+const token_1 = __importDefault(require("../token"));
+const auth_1 = require("../../middlewares/auth");
 const router = (0, express_1.Router)();
 // Index
 // Login

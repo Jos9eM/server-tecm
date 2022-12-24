@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const index_routes_1 = __importDefault(require("./routes/index.routes"));
+const usuarios_1 = __importDefault(require("./routes/usuarios"));
 class Server {
     constructor(port) {
         this.port = port;
@@ -30,10 +31,12 @@ class Server {
     // Middleware procesa los metodos del servicio
     // ----------------------------------------------------------------
     middlewares() {
-        this.app.use((0, morgan_1.default)('dev'));
+        this.app.use((0, morgan_1.default)("dev"));
+        this.app.use(express_1.default.json());
     }
     routes() {
         this.app.use(index_routes_1.default);
+        this.app.use("/user", usuarios_1.default);
     }
     start() {
         return __awaiter(this, void 0, void 0, function* () {

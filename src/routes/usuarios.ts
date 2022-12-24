@@ -1,16 +1,17 @@
 import { Router, Request, Response } from "express";
 import { User } from "../models/userEntity";
 import bcrypt from "bcrypt";
-import Token from "../classes/token";
+import Token from "../token";
 import { tokenVerify } from "../middlewares/auth";
+import { loginUser, createUser } from "../controllers/user.controller";
+
 
 const userRoutes = Router();
 
 // Login
-userRoutes.post("/login", async (req: Request, res: Response) => {
-  const body = req.body;
+userRoutes.post("/login", loginUser);
 
-  User.findOne({ email: body.email }, (err: any, userDB: any) => {
+  /*User.findOne({ email: body.email }, (err: any, userDB: any) => {
     if (err) throw err;
     if (!userDB) {
       return res.json({
@@ -37,11 +38,13 @@ userRoutes.post("/login", async (req: Request, res: Response) => {
         message: "La contraseña no es valida",
       });
     }
-  });
-});
+  });*/
 
 // User Create
-userRoutes.post("/createUser", (req: Request, res: Response) => {
+userRoutes.post("/createUser", createUser);
+
+
+/*(req: Request, res: Response) => {
   const user = {
     name: req.body.name,
     email: req.body.email,
@@ -68,8 +71,7 @@ userRoutes.post("/createUser", (req: Request, res: Response) => {
         ok: false,
         message: err,
       });
-    });
-});
+    });*/
 
 // Actualizar usuarios
 userRoutes.post("/update", [tokenVerify], (req: any, res: Response) => {
