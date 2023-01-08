@@ -13,14 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const userEntity_1 = require("../database/userEntity");
+const userEntity_1 = require("../models/userEntity");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const token_1 = __importDefault(require("../classes/token"));
 const auth_1 = require("../middlewares/auth");
-const router = (0, express_1.Router)();
-// Index
+const userRoutes = (0, express_1.Router)();
 // Login
-router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+userRoutes.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
     userEntity_1.User.findOne({ email: body.email }, (err, userDB) => {
         if (err)
@@ -109,4 +108,4 @@ userRoutes.post("/update", [auth_1.tokenVerify], (req, res) => {
         }
     });
 });
-exports.default = router;
+exports.default = userRoutes;
