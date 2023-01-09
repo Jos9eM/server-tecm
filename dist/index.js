@@ -7,17 +7,21 @@ const server_1 = __importDefault(require("./classes/server"));
 const usuarios_1 = __importDefault(require("./routes/usuarios"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const morgan_1 = __importDefault(require("morgan"));
+const express_1 = __importDefault(require("express"));
 const server = new server_1.default();
 // Body Parser
 // ----------------------------------------------------------------
 // Middleware procesa los metodos del servicio 
 // ----------------------------------------------------------------
 server.app.use(body_parser_1.default.urlencoded({ extended: true }));
+server.app.use((0, morgan_1.default)("dev"));
+server.app.use(express_1.default.json());
 // User Routes
 server.app.use("/user", usuarios_1.default);
 // DB Connection
 mongoose_1.default
-    .connect("mongodb://localhost:27017/test", {
+    .connect("mongodb://0.0.0.0:27017/test", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })

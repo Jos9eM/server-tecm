@@ -2,6 +2,9 @@ import Server from "./classes/server";
 import userRoutes from "./routes/usuarios";
 import mongoose, { ConnectOptions } from "mongoose";
 import bodyParser from "body-parser";
+import morgan from "morgan";
+import express from "express";
+
 
 const server = new Server();
 
@@ -11,6 +14,8 @@ const server = new Server();
 // ----------------------------------------------------------------
 
 server.app.use(bodyParser.urlencoded({ extended: true }));
+server.app.use(morgan("dev"));
+server.app.use(express.json());
 
 // User Routes
 
@@ -19,7 +24,7 @@ server.app.use("/user", userRoutes);
 // DB Connection
 
 mongoose
-  .connect("mongodb://localhost:27017/test", {
+  .connect("mongodb://0.0.0.0:27017/test", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   } as ConnectOptions)

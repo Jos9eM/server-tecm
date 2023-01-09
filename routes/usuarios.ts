@@ -1,9 +1,9 @@
 import { Router, Request, Response } from "express";
 import { User } from "../models/userEntity";
-import bcrypt from "bcrypt";
 import Token from "../classes/token";
 import { tokenVerify } from "../middlewares/auth";
 
+const bcrypt = require("bcrypt")
 const userRoutes = Router();
 
 // Login
@@ -42,10 +42,13 @@ userRoutes.post("/login", async (req: Request, res: Response) => {
 
 // User Create
 userRoutes.post("/createUser", (req: Request, res: Response) => {
+
+  const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+
   const user = {
     name: req.body.name,
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 10),
+    password: hashedPassword,
     avatar: req.body.avatar,
   };
 

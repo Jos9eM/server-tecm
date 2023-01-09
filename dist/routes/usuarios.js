@@ -14,9 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const userEntity_1 = require("../models/userEntity");
-const bcrypt_1 = __importDefault(require("bcrypt"));
 const token_1 = __importDefault(require("../classes/token"));
 const auth_1 = require("../middlewares/auth");
+const bcrypt = require("bcrypt");
 const userRoutes = (0, express_1.Router)();
 // Login
 userRoutes.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -52,10 +52,11 @@ userRoutes.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, functi
 }));
 // User Create
 userRoutes.post("/createUser", (req, res) => {
+    const hashedPassword = bcrypt.hashSync(req.body.password, 10);
     const user = {
         name: req.body.name,
         email: req.body.email,
-        password: bcrypt_1.default.hashSync(req.body.password, 10),
+        password: hashedPassword,
         avatar: req.body.avatar,
     };
     userEntity_1.User.create(user)
