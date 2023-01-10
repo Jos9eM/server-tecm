@@ -474,10 +474,10 @@ const projectSchema = new Schema({
     type: String,
   },
   //Article, Prototype, Authoral, IMPI
-  evidence: {
+  evidence: [{
     type: String,
     required: [true, "Debe existir evidencia del proyecto"],
-  },
+  }],
   //Article, Prototype, Authoral, IMPI
   created: {
     type: Date,
@@ -522,7 +522,7 @@ interface IProject extends Document {
   issn: string;
   url: string;
   productUser: string;
-  evidence: string;
+  evidence: string[];
   created: Date;
   user: string;
 }

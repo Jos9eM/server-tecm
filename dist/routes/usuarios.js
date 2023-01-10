@@ -109,4 +109,12 @@ userRoutes.post("/update", [auth_1.tokenVerify], (req, res) => {
         }
     });
 });
+// Vericacion usuarios
+userRoutes.get("/", [auth_1.tokenVerify], (req, res) => {
+    const user = req.user;
+    res.json({
+        ok: true,
+        user
+    });
+});
 exports.default = userRoutes;

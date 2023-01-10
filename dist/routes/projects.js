@@ -22,6 +22,8 @@ const fileSystem = new file_system_1.default();
 projectRoutes.post("/", [auth_1.tokenVerify], (req, res) => {
     const body = req.body;
     body.user = req.user._id;
+    const evidence = fileSystem.evidenceFromTempToProjects(req.user._id);
+    body.evidence = evidence;
     projectEntity_1.Project.create(body)
         .then((projectDB) => __awaiter(void 0, void 0, void 0, function* () {
         yield projectDB.populate("user", "-password");
@@ -75,4 +77,11 @@ projectRoutes.post("/upload", [auth_1.tokenVerify], (req, res) => __awaiter(void
         file: file.mimetype,
     });
 }));
+//Servicio mostrar archivos
+projectRoutes.get("/evidence/:userId/:file", (req, res) => {
+    const userId = req.params.userId;
+    const file = req.params.file;
+    const pathFile = fileSystem.getFileUrl(userId, file);
+    res.sendFile(pathFile);
+});
 exports.default = projectRoutes;

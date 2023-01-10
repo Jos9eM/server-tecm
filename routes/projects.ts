@@ -12,6 +12,9 @@ projectRoutes.post("/", [tokenVerify], (req: any, res: Response) => {
   const body = req.body;
   body.user = req.user._id;
 
+  const evidence = fileSystem.evidenceFromTempToProjects(req.user._id);
+  body.evidence = evidence;
+
   Project.create(body)
     .then(async (projectDB) => {
       await projectDB.populate("user", "-password");
@@ -49,29 +52,43 @@ projectRoutes.get("/", async (req: any, res: Response) => {
 });
 
 //Servicio subir archivos
-projectRoutes.post("/upload", [tokenVerify], async (req: any, res: Response) => {
-  if (!req.files) {
-    return res.status(400).json({
-      ok: false,
-      message: "No se ha encontrado ningun archivo",
+projectRoutes.post(
+  "/upload",
+  [tokenVerify],
+  async (req: any, res: Response) => {
+    if (!req.files) {
+      return res.status(400).json({
+        ok: false,
+        message: "No se ha encontrado ningun archivo",
+      });
+    }
+
+    const file: IFileUpload = req.files.evidence;
+
+    if (!file) {
+      return res.status(400).json({
+        ok: false,
+        message: "No se subio ningun archivo",
+      });
+    }
+
+    await fileSystem.saveTempEvidence(file, req.user._id);
+
+    res.json({
+      ok: true,
+      file: file.mimetype,
     });
   }
+);
 
-  const file: IFileUpload = req.files.evidence;
+//Servicio mostrar archivos
+projectRoutes.get("/evidence/:userId/:file", (req: any, res: Response) => {
+  const userId = req.params.userId;
+  const file = req.params.file;
 
-  if (!file) {
-    return res.status(400).json({
-      ok: false,
-      message: "No se subio ningun archivo",
-    });
-  }
+  const pathFile = fileSystem.getFileUrl(userId, file);
 
-  await fileSystem.saveTempEvidence(file, req.user._id);
-
-  res.json({
-    ok: true,
-    file: file.mimetype,
-  });
+  res.sendFile(pathFile);
 });
 
 export default projectRoutes;

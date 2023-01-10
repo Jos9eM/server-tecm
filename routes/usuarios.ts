@@ -3,7 +3,7 @@ import { User } from "../models/userEntity";
 import Token from "../classes/token";
 import { tokenVerify } from "../middlewares/auth";
 
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 const userRoutes = Router();
 
 // Login
@@ -42,7 +42,6 @@ userRoutes.post("/login", async (req: Request, res: Response) => {
 
 // User Create
 userRoutes.post("/createUser", (req: Request, res: Response) => {
-
   const hashedPassword = bcrypt.hashSync(req.body.password, 10);
 
   const user = {
@@ -102,6 +101,16 @@ userRoutes.post("/update", [tokenVerify], (req: any, res: Response) => {
         token: tokenUser,
       });
     }
+  });
+});
+
+// Vericacion usuarios
+userRoutes.get("/", [tokenVerify], (req: any, res: Response) => {
+  const user = req.user;
+
+  res.json({
+    ok: true,
+    user
   });
 });
 

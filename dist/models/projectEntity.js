@@ -476,10 +476,10 @@ const projectSchema = new mongoose_1.Schema({
         type: String,
     },
     //Article, Prototype, Authoral, IMPI
-    evidence: {
-        type: String,
-        required: [true, "Debe existir evidencia del proyecto"],
-    },
+    evidence: [{
+            type: String,
+            required: [true, "Debe existir evidencia del proyecto"],
+        }],
     //Article, Prototype, Authoral, IMPI
     created: {
         type: Date,
