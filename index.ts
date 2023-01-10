@@ -4,25 +4,26 @@ import mongoose, { ConnectOptions } from "mongoose";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import express from "express";
-
+import projectRoutes from "./routes/projects";
+import fileUpload from "express-fileupload";
 
 const server = new Server();
 
+// ----------------------------------------------------------------
+// Middleware procesa los metodos del servicio
+// ----------------------------------------------------------------
 // Body Parser
-// ----------------------------------------------------------------
-// Middleware procesa los metodos del servicio 
-// ----------------------------------------------------------------
-
 server.app.use(bodyParser.urlencoded({ extended: true }));
 server.app.use(morgan("dev"));
 server.app.use(express.json());
+// File Upload  
+server.app.use(fileUpload());
 
 // User Routes
-
 server.app.use("/user", userRoutes);
+server.app.use("/projects", projectRoutes);
 
 // DB Connection
-
 mongoose
   .connect("mongodb://0.0.0.0:27017/test", {
     useNewUrlParser: true,
@@ -36,7 +37,6 @@ mongoose
   });
 
 //Starting Express server
-
 server.start(() => {
   console.log(`Server started on  port ${server.port}`);
 });
