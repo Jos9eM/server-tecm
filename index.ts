@@ -6,6 +6,7 @@ import morgan from "morgan";
 import express from "express";
 import projectRoutes from "./routes/projects";
 import fileUpload from "express-fileupload";
+import cors from "cors";
 
 const server = new Server();
 
@@ -18,6 +19,9 @@ server.app.use(morgan("dev"));
 server.app.use(express.json());
 // File Upload  
 server.app.use(fileUpload());
+
+// Cobfigurar CORS
+server.app.use(cors({origin: true, credentials: true}));
 
 // User Routes
 server.app.use("/user", userRoutes);
