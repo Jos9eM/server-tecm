@@ -474,10 +474,12 @@ const projectSchema = new Schema({
     type: String,
   },
   //Article, Prototype, Authoral, IMPI
-  evidence: [{
-    type: String,
-    required: [true, "Debe existir evidencia del proyecto"],
-  }],
+  evidence: [
+    {
+      type: String,
+      required: [true, "Debe existir evidencia del proyecto"],
+    },
+  ],
   //Article, Prototype, Authoral, IMPI
   created: {
     type: Date,
@@ -488,6 +490,11 @@ const projectSchema = new Schema({
     ref: "User",
     trim: true,
     required: [true, "Debe existir referencia a un usuario"],
+  },
+  projectId: {
+    type: String,
+    required: [true, "Debe existir un tipo de proyecto"],
+    enum: ["Articulo", "Prototipo", "Autoral", "IMPI"],
   },
 });
 
@@ -525,6 +532,7 @@ interface IProject extends Document {
   evidence: string[];
   created: Date;
   user: string;
+  projectId: string;
 }
 
 export const Project = model<IProject>("Project", projectSchema);

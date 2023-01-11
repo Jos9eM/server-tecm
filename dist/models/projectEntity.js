@@ -476,10 +476,12 @@ const projectSchema = new mongoose_1.Schema({
         type: String,
     },
     //Article, Prototype, Authoral, IMPI
-    evidence: [{
+    evidence: [
+        {
             type: String,
             required: [true, "Debe existir evidencia del proyecto"],
-        }],
+        },
+    ],
     //Article, Prototype, Authoral, IMPI
     created: {
         type: Date,
@@ -490,6 +492,11 @@ const projectSchema = new mongoose_1.Schema({
         ref: "User",
         trim: true,
         required: [true, "Debe existir referencia a un usuario"],
+    },
+    projectId: {
+        type: String,
+        required: [true, "Debe existir un tipo de proyecto"],
+        enum: ["Articulo", "Prototipo", "Autoral", "IMPI"],
     },
 });
 projectSchema.pre("save", function (next) {
