@@ -45,6 +45,8 @@ projectRoutes.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function*
     let skip = paginate - 1;
     skip = skip * 10;
     const projects = yield projectEntity_1.Project.find()
+        .where('user')
+        .equals(req.query.userId)
         .sort({ _id: -1 })
         .skip(skip)
         .limit(10)

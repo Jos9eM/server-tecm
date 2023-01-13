@@ -38,6 +38,8 @@ projectRoutes.get("/", async (req: any, res: Response) => {
   skip = skip * 10;
 
   const projects = await Project.find()
+    .where('user')
+    .equals(req.query.userId)
     .sort({ _id: -1 })
     .skip(skip)
     .limit(10)
